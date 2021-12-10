@@ -53,17 +53,41 @@ const Signup = ({ navigation }) => {
 
   const handleSignUp = async () => {
 
-    await firebase
-          .auth()
-          .createUserWithEmailAndPassword(data.email, data.password)
-          .then((result) => {
-            console.log('Signin');
-          })
-          .catch((error) => {
-            Alert.alert(
-              'User already exist'
-            );
-          });
+    if(data.email.length==0 && data.password.length==0){
+      Alert.alert(
+        'Please enter required email and password...!'
+      );
+    }else if(data.email.length==0){
+      Alert.alert(
+        'Please enter email...!'
+      );
+    }else if(data.password.length==0){
+      Alert.alert(
+        'Please enter password...!'
+      );
+    }
+    else{
+
+      if(data.password.length<8){
+        Alert.alert(
+          'Password should be of more than 7 character...!'
+        );
+      }
+      else{
+        await firebase
+            .auth()
+            .createUserWithEmailAndPassword(data.email, data.password)
+            .then((result) => {
+              console.log('Signin');
+            })
+            .catch((error) => {
+              Alert.alert(
+                'User already exist or enter  coreect email'
+              );
+            });
+      }
+      
+    }
   }
 
   return (
